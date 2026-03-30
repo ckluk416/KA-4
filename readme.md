@@ -1,7 +1,7 @@
 # RayKA-4
 Nama: Fathin Yassarahman<br>NIM: 241524041<br>Kelas:2B
 
-<video src="https://github.com/ckluk416/KA-4/raw/0491dd31337f8075f0bf4a6f0cb1ca3bb55468a3/preview.mp4" width="60%" controls ></video>
+<video src="https://github.com/ckluk416/KA-4/raw/6dea9a29a9c8229d3d720fa0a1c71abb15164757/preview.mp4" width="60%" controls ></video>
 
 
 
