@@ -5,6 +5,8 @@ Nama: Fathin Yassarahman<br>NIM: 241524041<br>Kelas:2B
 
 
 
+https://github.com/user-attachments/assets/53ad04f6-d755-4644-985c-9f63abf736ec
+
 
 ## tentang
 merupakan penugasan matakuliah grafika komputer praktek untuk UTS, menggunakan library raylib, serta contoh algoritma bresenham yang bisa diakses [disini](https://github.com/kyeiki/garis-raylib)
