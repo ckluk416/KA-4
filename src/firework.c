@@ -71,6 +71,14 @@ static void ExplodeFirework(Firework *f) {
                 p->color = pistilColor;
                 p->max_life = RandomFloat(2.0f, 3.5f);
             }
+        } else if (f->explosion_type == EXPLOSION_CHRYSANTHEMUM) {
+            speed = RandomFloat(200.0f, 250.0f); 
+            if (rand() % 100 < 15) {
+                p->color = WHITE;
+            } else {
+                p->color = f->core_color;
+            }
+            p->max_life = RandomFloat(2.0f, 2.5f);
         } else { 
             speed = RandomFloat(50.0f, 300.0f);
             if (rand() % 100 < 15) {

@@ -16,7 +16,8 @@ typedef enum {
 typedef enum {
     EXPLOSION_NORMAL,
     EXPLOSION_WILLOW,
-    EXPLOSION_PISTIL
+    EXPLOSION_PISTIL,
+    EXPLOSION_CHRYSANTHEMUM
 } ExplosionType;
 
 typedef struct {

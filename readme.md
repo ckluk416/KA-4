@@ -9,7 +9,7 @@ challenge:
 - [x] jumlah partikel saat meledak
 - variasi jenis letusan
     - [x] letusan willow (ekor pudar panjang melengkung ke bawah)
-    - [ ] letusan chrysanthemum (lebih padat dan seragam) 
+    - [x] letusan chrysanthemum (lebih padat dan seragam) 
     - [x] letusan pistil (ledakan pusat tambahan)
 
 demo sebelum challenge:

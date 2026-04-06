@@ -57,6 +57,7 @@ int main(void) {
         if (IsKeyPressed(KEY_E)) {
             if (currentExplosionType == EXPLOSION_NORMAL) currentExplosionType = EXPLOSION_WILLOW;
             else if (currentExplosionType == EXPLOSION_WILLOW) currentExplosionType = EXPLOSION_PISTIL;
+            else if (currentExplosionType == EXPLOSION_PISTIL) currentExplosionType = EXPLOSION_CHRYSANTHEMUM;
             else currentExplosionType = EXPLOSION_NORMAL;
         }
 
@@ -98,6 +99,7 @@ int main(void) {
         const char *expTypeStr = "Normal";
         if (currentExplosionType == EXPLOSION_WILLOW) expTypeStr = "Willow";
         else if (currentExplosionType == EXPLOSION_PISTIL) expTypeStr = "Pistil";
+        else if (currentExplosionType == EXPLOSION_CHRYSANTHEMUM) expTypeStr = "Chrysanthemum";
         DrawText(TextFormat("Explosion Type: %s (E)", expTypeStr), 20, 75, 12, LIGHTGRAY);
         
         int total_particles = 0;
