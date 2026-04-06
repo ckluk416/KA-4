@@ -10,7 +10,7 @@ challenge:
 - variasi jenis letusan
     - [x] letusan willow (ekor pudar panjang melengkung ke bawah)
     - [ ] letusan chrysanthemum (lebih padat dan seragam) 
-    - [ ] letusan pistil (ledakan pusat tambahan)
+    - [x] letusan pistil (ledakan pusat tambahan)
 
 demo sebelum challenge:
 <video src="https://github.com/ckluk416/KA-4/raw/6dea9a29a9c8229d3d720fa0a1c71abb15164757/preview.mp4" width="60%" controls ></video>

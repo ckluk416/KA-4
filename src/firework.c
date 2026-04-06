@@ -39,40 +39,53 @@ static void ExplodeFirework(Firework *f) {
     f->stage = EXPLODE;
     f->active_particles = NUM_PARTICLES;
     
+    Color pistilColor = WHITE;
+    if (f->explosion_type == EXPLOSION_PISTIL) {
+        Color colors[] = { MAGENTA, SKYBLUE, YELLOW, GREEN, PINK, WHITE };
+        pistilColor = colors[rand() % 6];
+    }
+    
     for (int i = 0; i < NUM_PARTICLES; i++) {
         Particle *p = &f->particles[i];
         p->pos = f->launch_pos;
         
         float theta = RandomFloat(0, 2.0f * PI);
         float phi = acosf(RandomFloat(-1.0f, 1.0f));
-        float speed = RandomFloat(50.0f, 300.0f);
+        float speed = 0.0f;
         
         if (f->explosion_type == EXPLOSION_WILLOW) {
-            speed = RandomFloat(50.0f, 200.0f);
             f->core_color = GOLD;
-        }
-        
-        if (rand() % 100 < 15) {
-            if (f->explosion_type == EXPLOSION_WILLOW) {
+            speed = RandomFloat(50.0f, 200.0f);
+            if (rand() % 100 < 15) {
                 speed = RandomFloat(150.0f, 200.0f); 
+            }
+            p->color = f->core_color;
+            p->max_life = RandomFloat(3.0f, 5.0f); 
+        } else if (f->explosion_type == EXPLOSION_PISTIL) {
+            if (i < NUM_PARTICLES * 0.75f) { 
+                speed = RandomFloat(200.0f, 350.0f);
                 p->color = f->core_color;
-            } else {
+                p->max_life = RandomFloat(1.5f, 2.5f);
+            } else { 
+                speed = RandomFloat(30.0f, 100.0f);
+                p->color = pistilColor;
+                p->max_life = RandomFloat(2.0f, 3.5f);
+            }
+        } else { 
+            speed = RandomFloat(50.0f, 300.0f);
+            if (rand() % 100 < 15) {
                 speed = RandomFloat(250.0f, 280.0f); 
                 p->color = WHITE;
+            } else {
+                p->color = f->core_color;
             }
-        } else {
-            p->color = f->core_color;
+            p->max_life = RandomFloat(1.5f, 3.5f);
         }
         
         p->vel.x = speed * sinf(phi) * cosf(theta);
         p->vel.y = speed * sinf(phi) * sinf(theta);
         
         p->life = 0;
-        if (f->explosion_type == EXPLOSION_WILLOW) {
-            p->max_life = RandomFloat(3.0f, 5.0f); 
-        } else {
-            p->max_life = RandomFloat(1.5f, 3.5f);
-        }
         p->active = true;
         
         p->history_index = 0;

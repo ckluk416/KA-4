@@ -55,7 +55,9 @@ int main(void) {
 
         if (IsKeyPressed(KEY_W)) wireframeMode = !wireframeMode;
         if (IsKeyPressed(KEY_E)) {
-            currentExplosionType = (currentExplosionType == EXPLOSION_NORMAL) ? EXPLOSION_WILLOW : EXPLOSION_NORMAL;
+            if (currentExplosionType == EXPLOSION_NORMAL) currentExplosionType = EXPLOSION_WILLOW;
+            else if (currentExplosionType == EXPLOSION_WILLOW) currentExplosionType = EXPLOSION_PISTIL;
+            else currentExplosionType = EXPLOSION_NORMAL;
         }
 
         float dt = GetFrameTime() * timeScale;
@@ -93,7 +95,10 @@ int main(void) {
         DrawText("TUBES UTS 241524041", 20, 20, 20, RAYWHITE);
         DrawText(TextFormat("Speed: %.2fx (UP/DOWN)", timeScale), 20, 45, 12, LIGHTGRAY);
         DrawText(TextFormat("Wireframe Mode: %s (W)", wireframeMode ? "ON" : "OFF"), 20, 60, 12, LIGHTGRAY);
-        DrawText(TextFormat("Explosion Type: %s (E)", currentExplosionType == EXPLOSION_WILLOW ? "Willow" : "Normal"), 20, 75, 12, LIGHTGRAY);
+        const char *expTypeStr = "Normal";
+        if (currentExplosionType == EXPLOSION_WILLOW) expTypeStr = "Willow";
+        else if (currentExplosionType == EXPLOSION_PISTIL) expTypeStr = "Pistil";
+        DrawText(TextFormat("Explosion Type: %s (E)", expTypeStr), 20, 75, 12, LIGHTGRAY);
         
         int total_particles = 0;
         for (int i = 0; i < NUM_FIREWORKS; i++) {
