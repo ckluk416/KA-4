@@ -1,6 +1,18 @@
 # RayKA-4
 Nama: Fathin Yassarahman<br>NIM: 241524041<br>Kelas:2B
 
+challenge:
+- [ ] mode wireframe
+- [ ] perjelas bentuk kembang api sebelum handur (variasi ekor yang lebih acak dan alami)
+- [ ] objek langit
+- [ ] pengatur kecepatan
+- [x] jumlah partikel saat meledak
+- variasi jenis letusan
+    - [ ] letusan willow (ekor pudar panjang melengkung ke bawah)
+    - [ ] letusan chrysanthemum (lebih padat dan seragam) 
+    - [ ] letusan pistil (ledakan pusat tambahan)
+
+demo sebelum challenge:
 <video src="https://github.com/ckluk416/KA-4/raw/6dea9a29a9c8229d3d720fa0a1c71abb15164757/preview.mp4" width="60%" controls ></video>
 
 
@@ -11,7 +23,7 @@ https://github.com/user-attachments/assets/53ad04f6-d755-4644-985c-9f63abf736ec
 ## tentang
 merupakan penugasan matakuliah grafika komputer praktek untuk UTS, menggunakan library raylib, serta contoh algoritma bresenham yang bisa diakses [disini](https://github.com/kyeiki/garis-raylib)
 
-### etimologi
+### terminologi
 `Ray` untuk Raylib, 
 `KA` singkatan dari Kembang Api, program ini masih prototipe/blueprint/ide yang belum saya fix kan, maka dari itu ada `..-4` dijudul yang merupakan ide ke 4
 <details>

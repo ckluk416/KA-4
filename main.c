@@ -57,7 +57,7 @@ int main(void) {
                 }
             }
         }
-        // DrawText(TextFormat("active Particles: %d", total_particles), 20, 65, 12, LIGHTGRAY);
+        DrawText(TextFormat("active Particles: %d", total_particles), 20, 65, 12, LIGHTGRAY);
         DrawFPS(screenWidth - 100, 20);
 
         EndDrawing();
