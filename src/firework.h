@@ -13,6 +13,11 @@ typedef enum {
     DONE
 } FireworkStage;
 
+typedef enum {
+    EXPLOSION_NORMAL,
+    EXPLOSION_WILLOW
+} ExplosionType;
+
 typedef struct {
     Vector2 pos;
     Vector2 vel;
@@ -31,6 +36,7 @@ typedef struct {
     Vector2 launch_vel;
     Color core_color;
     FireworkStage stage;
+    ExplosionType explosion_type;
     Particle particles[NUM_PARTICLES];
     int active_particles;
     
@@ -39,8 +45,8 @@ typedef struct {
     int launch_history_count;
 } Firework;
 
-void InitFirework(Firework *f, int screenW, int screenH);
+void InitFirework(Firework *f, int screenW, int screenH, ExplosionType type);
 void UpdateFirework(Firework *f, float dt);
-void DrawFirework(Firework *f);
+void DrawFirework(Firework *f, bool wireframe);
 
 #endif

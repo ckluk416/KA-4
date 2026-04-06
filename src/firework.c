@@ -12,7 +12,8 @@ static float RandomFloat(float min, float max) {
     return min + scale * (max - min);
 }
 
-void InitFirework(Firework *f, int screenW, int screenH) {
+void InitFirework(Firework *f, int screenW, int screenH, ExplosionType type) {
+    f->explosion_type = type;
     f->launch_pos = (Vector2){ RandomFloat(100, screenW - 100), (float)screenH };
     f->target_pos = (Vector2){ f->launch_pos.x + RandomFloat(-150, 150), RandomFloat(100, screenH / 2.0f) };
     
@@ -46,9 +47,19 @@ static void ExplodeFirework(Firework *f) {
         float phi = acosf(RandomFloat(-1.0f, 1.0f));
         float speed = RandomFloat(50.0f, 300.0f);
         
+        if (f->explosion_type == EXPLOSION_WILLOW) {
+            speed = RandomFloat(50.0f, 200.0f);
+            f->core_color = GOLD;
+        }
+        
         if (rand() % 100 < 15) {
-            speed = RandomFloat(250.0f, 280.0f); 
-            p->color = WHITE;
+            if (f->explosion_type == EXPLOSION_WILLOW) {
+                speed = RandomFloat(150.0f, 200.0f); 
+                p->color = f->core_color;
+            } else {
+                speed = RandomFloat(250.0f, 280.0f); 
+                p->color = WHITE;
+            }
         } else {
             p->color = f->core_color;
         }
@@ -57,7 +68,11 @@ static void ExplodeFirework(Firework *f) {
         p->vel.y = speed * sinf(phi) * sinf(theta);
         
         p->life = 0;
-        p->max_life = RandomFloat(1.5f, 3.5f);
+        if (f->explosion_type == EXPLOSION_WILLOW) {
+            p->max_life = RandomFloat(3.0f, 5.0f); 
+        } else {
+            p->max_life = RandomFloat(1.5f, 3.5f);
+        }
         p->active = true;
         
         p->history_index = 0;
@@ -70,7 +85,11 @@ void UpdateFirework(Firework *f, float dt) {
     if (f->stage == DONE) return;
     
     if (f->stage == LAUNCH) {
-        f->launch_history[f->launch_history_index] = f->launch_pos;
+        Vector2 historyPos = {
+            f->launch_pos.x + RandomFloat(-1.5f, 1.5f),
+            f->launch_pos.y + RandomFloat(-1.5f, 1.5f)
+        };
+        f->launch_history[f->launch_history_index] = historyPos;
         f->launch_history_index = (f->launch_history_index + 1) % (TRAIL_LENGTH * 2);
         if (f->launch_history_count < TRAIL_LENGTH * 2) f->launch_history_count++;
         
@@ -102,8 +121,14 @@ void UpdateFirework(Firework *f, float dt) {
             if (p->history_count < TRAIL_LENGTH) p->history_count++;
             
             p->vel.y += 100.0f * dt;
-            p->vel.x *= 0.98f;    
-            p->vel.y *= 0.98f;       
+            if (f->explosion_type == EXPLOSION_WILLOW) {
+                p->vel.y += 50.0f * dt; 
+                p->vel.x *= 0.95f;      
+                p->vel.y *= 0.98f;
+            } else {
+                p->vel.x *= 0.98f;    
+                p->vel.y *= 0.98f;       
+            }
             
             p->vel.x += 10.0f * dt;
             
@@ -117,7 +142,7 @@ void UpdateFirework(Firework *f, float dt) {
     }
 }
 
-void DrawFirework(Firework *f) {
+void DrawFirework(Firework *f, bool wireframe) {
     if (f->stage == LAUNCH) {
         int count = f->launch_history_count;
         if (count > 1) {
@@ -126,16 +151,29 @@ void DrawFirework(Firework *f) {
                 int idx2 = (f->launch_history_index - 2 - i + (TRAIL_LENGTH * 2)) % (TRAIL_LENGTH * 2);
                 
                 float alpha = 1.0f - ((float)i / count);
-                Color c = ColorAlpha(WHITE, alpha);
+                Color trailColor = ORANGE; 
+                Color c = ColorAlpha(trailColor, alpha);
                 
-                BresenhamLine((int)f->launch_history[idx1].x, (int)f->launch_history[idx1].y,
-                              (int)f->launch_history[idx2].x, (int)f->launch_history[idx2].y, c);
+                int x1 = (int)f->launch_history[idx1].x;
+                int y1 = (int)f->launch_history[idx1].y;
+                int x2 = (int)f->launch_history[idx2].x;
+                int y2 = (int)f->launch_history[idx2].y;
+                
+                BresenhamLine(x1, y1, x2, y2, c);
+                if (!wireframe && rand() % 2 == 0) {
+                    DrawPixel(x1 + (rand() % 5 - 2), y1 + (rand() % 5 - 2), c);
+                }
             }
             int latest = (f->launch_history_index - 1 + (TRAIL_LENGTH * 2)) % (TRAIL_LENGTH * 2);
             BresenhamLine((int)f->launch_history[latest].x, (int)f->launch_history[latest].y,
-                          (int)f->launch_pos.x, (int)f->launch_pos.y, WHITE);
+                          (int)f->launch_pos.x, (int)f->launch_pos.y, ORANGE);
         }
-        DrawPixel((int)f->launch_pos.x, (int)f->launch_pos.y, WHITE);
+        
+        if (wireframe) {
+            MidpointCircle((int)f->launch_pos.x, (int)f->launch_pos.y, 4, f->core_color);
+        } else {
+            MidpointCircleFill((int)f->launch_pos.x, (int)f->launch_pos.y, 4, f->core_color);
+        }
     } 
     else if (f->stage == EXPLODE) {
         for (int i = 0; i < NUM_PARTICLES; i++) {
@@ -158,16 +196,20 @@ void DrawFirework(Firework *f) {
                     Color tColor = ColorAlpha(pColor, trail_alpha);
                     
                     DrawPixel((int)p->history[idx].x, (int)p->history[idx].y, tColor);
-                    if (j < 2) {
+                    if (!wireframe && j < 2) {
                         DrawPixel((int)p->history[idx].x + 1, (int)p->history[idx].y, tColor);
                         DrawPixel((int)p->history[idx].x, (int)p->history[idx].y + 1, tColor);
                     }
                 }
             }
             
-            DrawPixel((int)p->pos.x, (int)p->pos.y, ColorAlpha(pColor, alpha));
-            DrawPixel((int)p->pos.x + 1, (int)p->pos.y, ColorAlpha(pColor, alpha));
-            DrawPixel((int)p->pos.x, (int)p->pos.y + 1, ColorAlpha(pColor, alpha));
+            if (wireframe) {
+                DrawRectBresenham((int)p->pos.x - 1, (int)p->pos.y - 1, 3, 3, ColorAlpha(pColor, alpha));
+            } else {
+                DrawPixel((int)p->pos.x, (int)p->pos.y, ColorAlpha(pColor, alpha));
+                DrawPixel((int)p->pos.x + 1, (int)p->pos.y, ColorAlpha(pColor, alpha));
+                DrawPixel((int)p->pos.x, (int)p->pos.y + 1, ColorAlpha(pColor, alpha));
+            }
         }
     }
 }

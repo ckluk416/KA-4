@@ -2,13 +2,13 @@
 Nama: Fathin Yassarahman<br>NIM: 241524041<br>Kelas:2B
 
 challenge:
-- [ ] mode wireframe
-- [ ] perjelas bentuk kembang api sebelum handur (variasi ekor yang lebih acak dan alami)
-- [ ] objek langit
-- [ ] pengatur kecepatan
+- [x] mode wireframe
+- [x] perjelas bentuk kembang api sebelum handur (variasi ekor yang lebih acak dan alami)
+- [x] objek langit
+- [x] pengatur kecepatan
 - [x] jumlah partikel saat meledak
 - variasi jenis letusan
-    - [ ] letusan willow (ekor pudar panjang melengkung ke bawah)
+    - [x] letusan willow (ekor pudar panjang melengkung ke bawah)
     - [ ] letusan chrysanthemum (lebih padat dan seragam) 
     - [ ] letusan pistil (ledakan pusat tambahan)
 
